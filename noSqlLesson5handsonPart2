@@ -1,3 +1,5 @@
+// Query 1: Create a query to insert this data into a new collection named songs: //
+
 db.songs.insertMany([
   {
     songId: 1,
@@ -95,3 +97,11 @@ db.songs.insertMany([
     details: { artist: "Janet Jackson", album: "Janet Jackson's Rhythm Nation 1814", releaseYear: 1989 }
   }
 ]);
+
+// Query 2: Run a query to rename the title field to songTitle, so it is clearer to the developers working with the data //
+
+db.songs.updateMany({}, {$rename: {title: "songTitle"}});
+
+// Query 3: They would like to have the artist field to be outside the details document but the album and releaseYear should stay within that document //
+
+db.songs.updateMany({}, {$rename: {"details.artist": "artist"}});
