@@ -1,0 +1,115 @@
+// Query 1: Create a new collection in Atlas named employees //
+
+db.employees.insertMany([
+...   {
+...     name: "Alison Davidson",
+...     birthday: "04/05/75",
+...     address: "874 W. Oak Place",
+...     city: "Gary",
+...     state: "Indiana",
+...     position: { name: "Customer Support", remote: true, "full time": true },
+...   },
+...   {
+...     name: "Henry Chapelton",
+...     birthday: "09/29/80",
+...     address: "9324 E. Vista Way",
+...     city: "Tempe",
+...     state: "Arizona",
+...     position: { name: "Customer Support", remote: false, "full time": true },
+...   },
+...   {
+...     name: "Alex Miller",
+...     birthday: "11/22/83",
+...     address: "244 Price Road",
+...     city: "Mesa",
+...     state: "Arizona",
+...     position: { name: "Customer Support", remote: false, "full time": false },
+...   },
+...   {
+...     name: "Carly Nielson",
+...     birthday: "08/04/87",
+...     address: "678 W. Westward Road",
+...     city: "Phoenix",
+...     state: "Arizona",
+...     position: { name: "Office Manager", remote: false, "full time": true },
+...   },
+...   {
+...     name: "Tom Talbot",
+...     birthday: "12/30/89",
+...     address: "12 Oakland Way",
+...     city: "Chandler",
+...     state: "Arizona",
+...     position: { name: "Inventory Manager", remote: false, "full time": true },
+...   },
+...   {
+...     name: "Mary Crawley",
+...     birthday: "07/06/80",
+...     address: "1010 Granite Way",
+...     city: "Charlotte",
+...     state: "North Carolina",
+...     position: { name: "Human Resources", remote: true, "full time": true },
+...   },
+...   {
+...     name: "Daisy Baxter",
+...     birthday: "09/09/87",
+...     address: "90 E. 84th St",
+...     city: "Tempe",
+...     state: "Arizona",
+...     position: { name: "CEO", remote: false, "full time": true },
+...   },
+...   {
+...     name: "William Coyle",
+...     birthday: "10/11/91",
+...     address: "944 W. 16th St",
+...     city: "Phoenix",
+...     state: "Arizona",
+...     position: { name: "Intern", remote: false, "full time": false },
+...   },
+...   {
+...     name: "Edith Bates",
+...     birthday: "07/28/90",
+...     address: "7 E. 20th Pl",
+...     city: "Chandler",
+...     state: "Arizona",
+...     position: { name: "Customer Support", remote: false, "full time": true },
+...   },
+...   {
+...     name: "Gwen Harding",
+...     birthday: "10/11/86",
+...     address: "234 W. 48th St",
+...     city: "Phoenix",
+...     state: "Arizona",
+...     position: { name: "Office Assistant", remote: false, "full time": true },
+...   },
+... ]);
+
+// Query 2: no longer wants remote employees //
+
+db.employees.updateMany(
+{'position.remote' : true}, 
+{$set: {'position.remote': false }}
+);
+
+// Alison Davidson now lives at 777 E. 1st St. # 120 Tempe, AZ //
+
+db.employees.updateOne(
+  { name: 'Alison Davidson' },
+  { $set: { address: '777 E. 1st St. # 120', city: 'Tempe'}}
+);
+
+// Mary Crawley now lives at 8322 W. Vista Pl. Scottsdale, AZ //
+
+db.employees.updateOne(
+  { name: 'Mary Crawley' },
+  { $set: { address: '8322 W. Vista Pl.', city: 'Scottsdale'}}
+);
+
+// Since all employees now all live in Arizona, there is no need to have a field named "state" 
+within this collection, so please remove it //
+
+db.employees.updateMany({}, {$unset: {state: ''}});
+
+// Create an index for efficient searching using the "position" field 
+(remember that field includes a document with three other fields) //
+
+db.employees.createIndex ({position: 1});
